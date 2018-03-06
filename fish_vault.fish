@@ -1,5 +1,5 @@
 function fish_vault --argument ip username
-  if not test (command -v vault > /dev/null)
+  if not command -v vault > /dev/null
     echo
     echo (set_color red) "Error, vault is not installed!" (set_color normal)
     echo
@@ -8,7 +8,7 @@ function fish_vault --argument ip username
 
   set -l vault_role "stepstone_default"
 
-  if not test (set -q ip)
+  if not set -q ip
     echo (set_color red) "Not enough arguments: You need to provide at least an IP" (set_color normal)
     echo
     echo "fish_vault IP [USERNAME]"
@@ -19,11 +19,11 @@ function fish_vault --argument ip username
   set -l token_file "$HOME/.vault-token"
   vault login (cat $token_file) > /dev/null
 
-  if $status == 2 # it failed authentication with token, using ldap
+  if test $status -eq 2 # it failed authentication with token, using ldap
     vault login -method=ldap username=(whoami)
   end
 
-  if $status != 0
+  if test $status -ne 0
     echo
     echo (set_color red) "Not authenticated, I have no idea what to do!" (set_color normal)
     echo
