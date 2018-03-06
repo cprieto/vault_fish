@@ -1,4 +1,6 @@
 function fish_vault --argument ip username
+  set -xg VAULT_ADDR 'https://dub-vault.stepstone.com:8200'
+
   if not command -v vault > /dev/null
     echo
     echo (set_color red) "Error, vault is not installed!" (set_color normal)
